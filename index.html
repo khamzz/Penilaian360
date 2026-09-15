@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Penilaian 360° — Integritas & Kinerja Pegawai</title>
+<style>
+  :root{
+    --navy:#0B2545; --navy-dark:#071A33; --gold:#C9A227; --gold-light:#E7C873;
+    --cream:#F7F5F0; --line:#E6E1D3; --line-soft:#F0EDE4; --ink:#22252B;
+    --muted:#5B5F6B; --faint:#8A8F9A; --danger:#C0392B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+       font-family:'Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.5}
+  h1,h2,h3{font-family:Georgia,'Times New Roman',serif;color:var(--navy);margin:0}
+  header{background:linear-gradient(90deg,var(--navy-dark),var(--navy));padding:16px 20px}
+  .bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+  .head-in{max-width:940px;margin:0 auto;display:flex;justify-content:space-between;
+           align-items:center;gap:12px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px}
+  .mark{width:36px;height:36px;border-radius:8px;flex:0 0 auto;display:flex;
+        align-items:center;justify-content:center;font:700 15px/1 Georgia,serif;
+        color:var(--navy-dark);background:linear-gradient(135deg,var(--gold-light),var(--gold))}
+  .brand b{display:block;font:700 16px/1.2 Georgia,serif;color:#fff}
+  .brand span{font-size:11px;color:var(--gold-light);letter-spacing:.4px}
+  main{max-width:940px;margin:0 auto;padding:28px 20px 72px}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .lead{color:var(--muted);max-width:62ch;margin:8px 0 24px}
+
+  button{font:inherit}
+  .btn{background:var(--navy);color:var(--gold-light);border:0;border-radius:8px;
+       padding:11px 18px;font-weight:600;cursor:pointer}
+  .btn:hover{background:var(--navy-dark)}
+  .btn[disabled]{opacity:.6;cursor:default}
+  .btn-ghost{background:transparent;border:1px solid var(--navy);color:var(--navy)}
+  .btn-ghost:hover{background:#f2f0ea}
+  .btn-line{background:transparent;border:1px solid var(--gold-light);color:var(--gold-light);
+            border-radius:6px;padding:6px 14px;font-size:13px;cursor:pointer}
+  .btn-sm{padding:7px 12px;font-size:13px}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  label{font-size:13.5px}
+  input,select,textarea{width:100%;padding:10px 12px;border:1px solid #D8D3C6;border-radius:8px;
+        font:inherit;font-size:14px;background:#fff}
+  textarea{resize:vertical;min-height:84px}
+  .field-label{display:block;font-size:12.5px;color:var(--faint);margin-bottom:5px}
+
+  .sec-title{font-weight:700;color:var(--navy);font-size:14px;margin-bottom:12px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:16px;
+       padding:11px 0;border-top:1px solid var(--line-soft)}
+  .row:first-of-type{border-top:0}
+  .row p{margin:0;font-size:13.5px}
+  .num{color:var(--gold);font-weight:700;margin-right:6px}
+  .scale{display:flex;gap:6px;flex-wrap:wrap;flex:0 0 auto}
+  .scale button{width:40px;height:40px;border-radius:8px;border:1px solid #D8D3C6;
+        background:#fff;color:var(--navy);font-weight:700;font-size:15px;cursor:pointer}
+  .scale button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--gold-light)}
+
+  .notice{padding:11px 14px;border-radius:8px;font-size:13.5px;margin-bottom:14px}
+  .err{background:#FDECEA;color:var(--danger)}
+  .ok{background:#EAF5EE;color:#1A7A4C}
+  .muted{color:var(--faint);font-size:13px}
+  .empty{background:#fff;border:1px solid var(--line);border-radius:12px;
+         padding:40px 20px;text-align:center;color:var(--faint)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 8px;border-top:1px solid var(--line-soft)}
+  th{color:var(--faint);font-size:12px;font-weight:600;border-top:0}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+
+  .meter{height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden;margin-top:5px}
+  .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--navy),var(--gold))}
+  .badges{display:flex;gap:26px;flex-wrap:wrap}
+  .badge{text-align:center}
+  .badge em{display:block;font-style:normal;font-size:11px;color:var(--faint)}
+  .badge b{font:800 24px/1.2 Georgia,serif;display:block}
+  .badge.big b{font-size:31px}
+  .badge i{font-style:normal;font-size:10.5px;font-weight:600}
+
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .tabs button{background:#fff;border:1px solid var(--line);color:var(--muted);
+       border-radius:999px;padding:7px 16px;font-size:13.5px;cursor:pointer}
+  .tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+
+  .legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:8px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+  @media (max-width:720px){
+    .grid2{grid-template-columns:1fr}
+    .row{flex-direction:column;align-items:flex-start;gap:8px}
+    .badges{gap:18px}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .btn,.scale button,.tabs button{transition:background .12s,color .12s,border-color .12s}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-in">
+    <div class="brand">
+      <div class="mark">360</div>
+      <div><b>Penilaian 360°</b><span>Integritas &amp; Kinerja Pegawai</span></div>
+    </div>
+    <button class="btn-line" id="btn-home" hidden>Kembali ke beranda</button>
+  </div>
+</header>
+<div class="bar"></div>
+
+<main id="app"><p class="muted">Memuat data dari Google Sheets…</p></main>
+
+<script src="config.js"></script>
+<script>
+/* =====================================================================
+   Lapisan akses data — memanggil Apps Script Web App lewat fetch()
+   Tidak lagi memakai google.script.run, sehingga halaman ini bisa
+   di-hosting di mana saja (GitHub Pages, Netlify, server statis, dst),
+   selama masih terhubung ke Web App Apps Script yang sama sebagai API,
+   dan Web App itu tetap membaca/menulis ke Google Sheets yang sama.
+   ===================================================================== */
+var ENDPOINT_MAP = {
+  apiBootstrap:  { method: 'GET',  action: 'bootstrap' },
+  apiRecords:    { method: 'GET',  action: 'records'   },
+  apiRekap:      { method: 'GET',  action: 'rekap'      },
+  apiSubmit:     { method: 'POST', action: 'submit'     },
+  apiAddEmployee:{ method: 'POST', action: 'addEmployee'}
+};
+
+function call(fn){
+  var args = Array.prototype.slice.call(arguments, 1);
+  var spec = ENDPOINT_MAP[fn];
+  if (!spec) return Promise.reject(new Error('Aksi tidak dikenal: ' + fn));
+
+  if (!window.APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('GANTI_DENGAN') !== -1) {
+    return Promise.reject(new Error(
+      'URL Apps Script belum diisi. Buka file config.js dan ganti APPS_SCRIPT_URL ' +
+      'dengan URL Web App Anda (Deploy → Manage deployments di Apps Script).'
+    ));
+  }
+
+  if (spec.method === 'GET') {
+    var url = new URL(APPS_SCRIPT_URL);
+    url.searchParams.set('action', spec.action);
+    if (fn === 'apiRecords') { url.searchParams.set('employeeId', args[0]); url.searchParams.set('pin', args[1]); }
+    if (fn === 'apiRekap')   { url.searchParams.set('pin', args[0]); }
+    return fetch(url.toString()).then(parseRes_);
+  }
+
+  // POST dikirim sebagai text/plain agar browser tidak memicu preflight
+  // OPTIONS (Apps Script tidak mengimplementasikan doOptions). Apps
+  // Script tetap membaca isinya sebagai JSON biasa di e.postData.contents.
+  return fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: spec.action, payload: args[0] })
+  }).then(parseRes_);
+}
+
+function parseRes_(r){
+  if (!r.ok) throw new Error('Server merespons status ' + r.status + '.');
+  return r.json();
+}
+
+
+/* ------------------------------ State ------------------------------ */
+var S = {
+  view:'home', boot:null, pin:sessionStorage.getItem('p360pin')||'',
+  form:{ mode:'existing', employeeId:'', newNama:'', newJabatan:'', newUnit:'',
+         raterName:'', raterType:'atasan', scores:{}, notes:'' },
+  hasilTab:'rekap', hasilEmpId:'', records:[], rekap:[], busy:false, msg:null
+};
+var app = document.getElementById('app');
+var btnHome = document.getElementById('btn-home');
+btnHome.onclick = function(){ go('home'); };
+
+function go(v){ S.view=v; S.msg=null; render(); window.scrollTo(0,0); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function allItems(){ return S.boot.integritas.concat(S.boot.kinerja); }
+function labelRater(k){
+  var f = S.boot.raterTypes.filter(function(r){return r.key===k;})[0];
+  return f ? f.label : k;
+}
+function nilaiLabel(v){
+  if(v==null) return null;
+  if(v>=4.5) return {t:'Sangat baik',c:'#1A7A4C'};
+  if(v>=3.5) return {t:'Baik',c:'#2E7D32'};
+  if(v>=2.5) return {t:'Cukup',c:'#C9A227'};
+  if(v>=1.5) return {t:'Kurang',c:'#C05621'};
+  return {t:'Sangat kurang',c:'#C0392B'};
+}
+function fix(v,d){ return v==null?'—':Number(v).toFixed(d==null?2:d); }
+function rata(arr){
+  var v = arr.filter(function(x){ return typeof x==='number' && !isNaN(x) && x>0; });
+  return v.length ? v.reduce(function(a,b){return a+b;},0)/v.length : null;
+}
+
+/* ------------------------------ Boot ------------------------------ */
+call('apiBootstrap').then(function(res){
+  if(!res.ok) throw new Error(res.error||'Gagal memuat data.');
+  S.boot = res;
+  S.form.mode = res.employees.length ? 'existing' : 'new';
+  S.hasilEmpId = res.employees.length ? res.employees[0].id : '';
+  render();
+}).catch(function(e){
+  app.innerHTML = '<div class="notice err">Data gagal dimuat: '+esc(e.message)+
+    '<br>Periksa: (1) config.js sudah diisi URL Web App yang benar, '+
+    '(2) Web App di-deploy dengan akses "Anyone", (3) fungsi setup() sudah '+
+    'pernah dijalankan sekali di Apps Script.</div>';
+});
+
+/* ------------------------------ Render ------------------------------ */
+function render(){
+  btnHome.hidden = (S.view==='home');
+  if(S.view==='home') viewHome();
+  else if(S.view==='form') viewForm();
+  else if(S.view==='terkirim') viewTerkirim();
+  else if(S.view==='hasil') viewHasil();
+}
+
+function viewHome(){
+  var b = S.boot;
+  app.innerHTML =
+    '<h1>Alat penilaian 360 derajat</h1>'+
+    '<p class="lead">Menilai integritas dan kinerja pegawai dari empat sudut pandang: atasan '+
+    'langsung, rekan sejawat, bawahan, dan diri sendiri. Semua jawaban tersimpan di Google '+
+    'Sheets, sehingga setiap penilai cukup membuka tautan yang sama dan mengisi formulirnya.</p>'+
+    '<div class="grid2">'+
+      kartu('Isi formulir penilaian',
+        'Untuk penilai. Beri skor 1–5 pada lima indikator integritas dan lima indikator kinerja.',
+        'Mulai menilai','act-form')+
+      kartu('Lihat hasil penilaian',
+        'Untuk admin dan pimpinan. Rekap skor terbobot per pegawai dan rincian tiap indikator. Perlu PIN.',
+        'Buka hasil','act-hasil')+
+    '</div>'+
+    '<div class="card">'+
+      '<div class="sec-title">Bobot tiap sumber penilai</div>'+
+      '<table><tbody>'+
+        b.raterTypes.map(function(r){
+          return '<tr><td>'+esc(r.label)+'</td><td class="n">'+Math.round(r.bobot*100)+'%</td></tr>';
+        }).join('')+
+      '</tbody></table>'+
+      '<p class="muted" style="margin:12px 0 0">Bila satu sumber belum mengisi, bobotnya '+
+      'dinormalisasi ke sumber yang tersedia. Skor akhir = 50% integritas + 50% kinerja. '+
+      'Ubah bobot lewat sheet <b>Config</b>. Pegawai terdaftar saat ini: <b>'+
+      b.employees.length+'</b>.</p>'+
+    '</div>';
+  document.getElementById('act-form').onclick = function(){ go('form'); };
+  document.getElementById('act-hasil').onclick = function(){ go('hasil'); };
+}
+
+function kartu(judul,teks,aksi,id){
+  return '<div class="card" style="display:flex;flex-direction:column">'+
+    '<h2 style="font-size:18px;margin-bottom:8px">'+judul+'</h2>'+
+    '<p style="color:var(--muted);font-size:13.5px;flex:1;margin:0 0 16px">'+teks+'</p>'+
+    '<div><button class="btn" id="'+id+'">'+aksi+'</button></div></div>';
+}
+
+/* ------------------------------ Formulir ------------------------------ */
+function viewForm(){
+  var f = S.form, b = S.boot, items = allItems();
+  var terisi = items.filter(function(it){ return f.scores[it.id]; }).length;
+
+  app.innerHTML =
+    '<h2 style="font-size:22px;margin-bottom:18px">Formulir penilaian</h2>'+
+
+    '<div class="card">'+
+      '<div class="sec-title">1. Pegawai yang dinilai</div>'+
+      '<div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px">'+
+        '<label><input type="radio" name="mode" value="existing" style="width:auto"'+
+          (f.mode==='existing'?' checked':'')+(b.employees.length?'':' disabled')+
+          '> Pilih pegawai terdaftar</label>'+
+        '<label><input type="radio" name="mode" value="new" style="width:auto"'+
+          (f.mode==='new'?' checked':'')+'> Tambah pegawai baru</label>'+
+      '</div>'+
+      (f.mode==='existing'
+        ? '<select id="f-emp"><option value="">— Pilih pegawai —</option>'+
+          b.employees.map(function(e){
+            return '<option value="'+esc(e.id)+'"'+(f.employeeId===e.id?' selected':'')+'>'+
+              esc(e.nama)+(e.jabatan?' — '+esc(e.jabatan):'')+'</option>';
+          }).join('')+'</select>'
+        : '<div class="grid2" style="gap:10px">'+
+            '<div><span class="field-label">Nama pegawai</span>'+
+              '<input id="f-nama" value="'+esc(f.newNama)+'" placeholder="Nama lengkap"></div>'+
+            '<div><span class="field-label">Jabatan (opsional)</span>'+
+              '<input id="f-jab" value="'+esc(f.newJabatan)+'"></div>'+
+            '<div style="grid-column:1/-1"><span class="field-label">Unit kerja (opsional)</span>'+
+              '<input id="f-unit" value="'+esc(f.newUnit)+'"></div>'+
+          '</div>')+
+    '</div>'+
+
+    '<div class="card">'+
+      '<div class="sec-title">2. Identitas penilai</div>'+
+      '<div class="grid2" style="gap:10px">'+
+        '<div><span class="field-label">Nama penilai</span>'+
+          '<input id="f-rname" value="'+esc(f.raterName)+'" placeholder="Nama Anda"></div>'+
+        '<div><span class="field-label">Posisi Anda terhadap pegawai tersebut</span>'+
+          '<select id="f-rtype">'+b.raterTypes.map(function(r){
+            return '<option value="'+r.key+'"'+(f.raterType===r.key?' selected':'')+'>'+
+              esc(r.label)+'</option>'; }).join('')+'</select></div>'+
+      '</div>'+
+    '</div>'+
+
+    seksiSkor('3. Aspek integritas', b.integritas)+
+    seksiSkor('4. Aspek kinerja', b.kinerja)+
+
+    '<div class="card">'+
+      '<div class="sec-title">5. Catatan tambahan (opsional)</div>'+
+      '<textarea id="f-notes" placeholder="Contoh perilaku yang Anda amati, atau saran pengembangan.">'+
+        esc(f.notes)+'</textarea>'+
+    '</div>'+
+
+    (S.msg ? '<div class="notice err">'+esc(S.msg)+'</div>' : '')+
+
+    '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">'+
+      '<span class="muted">'+terisi+' dari '+items.length+' indikator terisi</span>'+
+      '<button class="btn" id="f-submit"'+(S.busy?' disabled':'')+'>'+
+        (S.busy?'Menyimpan…':'Simpan penilaian')+'</button>'+
+    '</div>';
+
+  // Skala 1–5
+  document.querySelectorAll('[data-item]').forEach(function(btn){
+    btn.onclick = function(){
+      S.form.scores[btn.dataset.item] = Number(btn.dataset.val);
+      viewForm();
+    };
+  });
+  document.querySelectorAll('input[name="mode"]').forEach(function(r){
+    r.onchange = function(){ S.form.mode = r.value; S.msg=null; viewForm(); };
+  });
+  bind('f-emp','employeeId'); bind('f-nama','newNama'); bind('f-jab','newJabatan');
+  bind('f-unit','newUnit'); bind('f-rname','raterName'); bind('f-rtype','raterType');
+  bind('f-notes','notes');
+  document.getElementById('f-submit').onclick = submit;
+}
+
+function bind(id, key){
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.oninput = el.onchange = function(){ S.form[key] = el.value; };
+}
+
+function seksiSkor(judul, items){
+  return '<div class="card"><div class="sec-title">'+judul+'</div>'+
+    items.map(function(it,i){
+      var v = S.form.scores[it.id];
+      return '<div class="row"><p><span class="num">'+(i+1)+'.</span>'+esc(it.label)+'</p>'+
+        '<div class="scale" role="group" aria-label="'+esc(it.label)+'">'+
+          [1,2,3,4,5].map(function(n){
+            return '<button type="button" data-item="'+it.id+'" data-val="'+n+'" '+
+              'aria-pressed="'+(v===n)+'" title="'+skalaTitel(n)+'">'+n+'</button>';
+          }).join('')+
+        '</div></div>';
+    }).join('')+
+    '<p class="muted" style="margin:12px 0 0">1 sangat kurang · 2 kurang · 3 cukup · 4 baik · 5 sangat baik</p>'+
+  '</div>';
+}
+function skalaTitel(n){
+  return ['','Sangat kurang','Kurang','Cukup','Baik','Sangat baik'][n];
+}
+
+function submit(){
+  var f = S.form, items = allItems();
+  if(f.mode==='existing' && !f.employeeId) return gagal('Pilih dulu pegawai yang akan dinilai.');
+  if(f.mode==='new' && !f.newNama.trim()) return gagal('Isi nama pegawai yang dinilai.');
+  if(!f.raterName.trim()) return gagal('Isi nama Anda sebagai penilai.');
+  var kurang = items.filter(function(it){ return !f.scores[it.id]; }).length;
+  if(kurang) return gagal('Masih ada '+kurang+' indikator yang belum diberi skor.');
+
+  S.busy = true; S.msg = null; viewForm();
+  call('apiSubmit', {
+    employeeId: f.mode==='existing' ? f.employeeId : '',
+    newNama: f.newNama, newJabatan: f.newJabatan, newUnit: f.newUnit,
+    raterName: f.raterName, raterType: f.raterType,
+    scores: f.scores, notes: f.notes
+  }).then(function(res){
+    S.busy = false;
+    if(!res.ok) return gagal(res.error);
+    return call('apiBootstrap').then(function(b){
+      if(b.ok) S.boot = b;
+      S.terkirimUntuk = res.employeeNama;
+      go('terkirim');
+    });
+  }).catch(function(e){ S.busy=false; gagal('Tersimpan gagal: '+e.message); });
+}
+function gagal(m){ S.busy=false; S.msg=m; viewForm(); }
+
+function viewTerkirim(){
+  app.innerHTML =
+    '<div class="card" style="text-align:center;padding:44px 20px">'+
+      '<div style="font-size:38px;color:var(--gold)">✓</div>'+
+      '<h2 style="font-size:21px;margin:8px 0">Penilaian tersimpan</h2>'+
+      '<p style="color:var(--muted);margin:0 0 22px">Jawaban Anda untuk <b>'+
+        esc(S.terkirimUntuk||'pegawai tersebut')+'</b> sudah masuk ke Google Sheets.</p>'+
+      '<button class="btn btn-ghost" id="t-lagi">Nilai pegawai lain</button> '+
+      '<button class="btn" id="t-home">Kembali ke beranda</button>'+
+    '</div>';
+  document.getElementById('t-lagi').onclick = function(){
+    S.form.scores={}; S.form.notes=''; S.form.employeeId='';
+    S.form.newNama=''; S.form.newJabatan=''; S.form.newUnit='';
+    S.form.mode = S.boot.employees.length?'existing':'new';
+    go('form');
+  };
+  document.getElementById('t-home').onclick = function(){ go('home'); };
+}
+
+/* ------------------------------ Hasil ------------------------------ */
+function viewHasil(){
+  if(!S.pin) return viewPin();
+  app.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">'+
+      '<h2 style="font-size:22px">Hasil penilaian</h2>'+
+      '<button class="btn btn-ghost btn-sm" id="h-keluar">Kunci kembali</button></div>'+
+    '<p class="muted" style="margin:4px 0 18px">Sumber data: sheet <b>Penilaian</b>.</p>'+
+    '<div class="tabs">'+
+      '<button id="tab-rekap" aria-selected="'+(S.hasilTab==='rekap')+'">Rekap semua pegawai</button>'+
+      '<button id="tab-detail" aria-selected="'+(S.hasilTab==='detail')+'">Rincian per pegawai</button>'+
+    '</div><div id="h-body"><p class="muted">Memuat…</p></div>';
+
+  document.getElementById('h-keluar').onclick = function(){
+    S.pin=''; sessionStorage.removeItem('p360pin'); S.records=[]; S.rekap=[]; render();
+  };
+  document.getElementById('tab-rekap').onclick = function(){ S.hasilTab='rekap'; viewHasil(); };
+  document.getElementById('tab-detail').onclick = function(){ S.hasilTab='detail'; viewHasil(); };
+
+  if(S.hasilTab==='rekap') muatRekap(); else muatDetail();
+}
+
+function viewPin(){
+  app.innerHTML =
+    '<div class="card" style="max-width:420px;margin:24px auto">'+
+      '<h2 style="font-size:19px;margin-bottom:6px">Halaman terkunci</h2>'+
+      '<p class="muted" style="margin:0 0 16px">Hasil penilaian hanya untuk admin dan pimpinan. '+
+      'Masukkan PIN untuk melanjutkan.</p>'+
+      '<input id="pin" type="password" placeholder="PIN" autocomplete="off">'+
+      (S.msg?'<div class="notice err" style="margin-top:12px">'+esc(S.msg)+'</div>':'')+
+      '<div style="margin-top:14px"><button class="btn" id="pin-ok">Buka hasil</button></div>'+
+    '</div>';
+  var inp = document.getElementById('pin');
+  inp.focus();
+  inp.onkeydown = function(e){ if(e.key==='Enter') cekPin(); };
+  document.getElementById('pin-ok').onclick = cekPin;
+
+  function cekPin(){
+    var v = inp.value.trim();
+    if(!v){ S.msg='PIN belum diisi.'; return viewPin(); }
+    call('apiRekap', v).then(function(res){
+      if(!res.ok){ S.msg=res.error; return viewPin(); }
+      S.pin = v; sessionStorage.setItem('p360pin', v);
+      S.rekap = res.rekap; S.msg=null; viewHasil();
+    }).catch(function(e){ S.msg=e.message; viewPin(); });
+  }
+}
+
+function muatRekap(){
+  var body = document.getElementById('h-body');
+  call('apiRekap', S.pin).then(function(res){
+    if(!res.ok){ body.innerHTML='<div class="notice err">'+esc(res.error)+'</div>'; return; }
+    S.rekap = res.rekap;
+    var adaData = S.rekap.some(function(r){ return r.jumlahPenilai>0; });
+    if(!adaData){
+      body.innerHTML = '<div class="empty">Belum ada penilaian yang masuk. '+
+        'Bagikan tautan halaman ini ke para penilai untuk mulai mengumpulkan data.</div>';
+      return;
+    }
+    body.innerHTML =
+      '<div class="card"><table><thead><tr>'+
+        '<th>Pegawai</th><th class="n">Penilai</th><th class="n">Sumber</th>'+
+        '<th class="n">Integritas</th><th class="n">Kinerja</th><th class="n">Skor akhir</th>'+
+      '</tr></thead><tbody>'+
+      S.rekap.map(function(r){
+        var l = nilaiLabel(r.skorAkhir);
+        return '<tr><td><b>'+esc(r.nama)+'</b>'+
+          (r.jabatan?'<div class="muted" style="font-size:12px">'+esc(r.jabatan)+
+            (r.unit?' · '+esc(r.unit):'')+'</div>':'')+'</td>'+
+          '<td class="n">'+r.jumlahPenilai+'</td>'+
+          '<td class="n">'+r.sumberTerisi+'/4</td>'+
+          '<td class="n">'+fix(r.integritas)+'</td>'+
+          '<td class="n">'+fix(r.kinerja)+'</td>'+
+          '<td class="n"><b style="color:'+(l?l.c:'#C7C7C7')+'">'+fix(r.skorAkhir)+'</b></td></tr>';
+      }).join('')+
+      '</tbody></table>'+
+      '<div style="margin-top:16px"><button class="btn btn-ghost btn-sm" id="unduh">'+
+        'Unduh rekap (CSV)</button></div></div>';
+    document.getElementById('unduh').onclick = unduhCsv;
+  }).catch(function(e){ body.innerHTML='<div class="notice err">'+esc(e.message)+'</div>'; });
+}
+
+function unduhCsv(){
+  var head = ['Nama','Jabatan','Unit','Jumlah penilai','Sumber terisi','Integritas','Kinerja','Skor akhir'];
+  var rows = S.rekap.map(function(r){
+    return [r.nama,r.jabatan,r.unit,r.jumlahPenilai,r.sumberTerisi+'/4',
+            fix(r.integritas),fix(r.kinerja),fix(r.skorAkhir)];
+  });
+  var csv = [head].concat(rows).map(function(r){
+    return r.map(function(c){ return '"'+String(c==null?'':c).replace(/"/g,'""')+'"'; }).join(',');
+  }).join('\r\n');
+  var a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download = 'rekap-penilaian-360.csv';
+  a.click();
+}
+
+function muatDetail(){
+  var body = document.getElementById('h-body');
+  var emps = S.boot.employees;
+  if(!emps.length){ body.innerHTML = '<div class="empty">Belum ada pegawai terdaftar.</div>'; return; }
+  if(!S.hasilEmpId) S.hasilEmpId = emps[0].id;
+
+  body.innerHTML =
+    '<select id="h-emp" style="max-width:380px;margin-bottom:18px">'+
+      emps.map(function(e){
+        return '<option value="'+esc(e.id)+'"'+(S.hasilEmpId===e.id?' selected':'')+'>'+
+          esc(e.nama)+'</option>'; }).join('')+
+    '</select><div id="h-detail"><p class="muted">Memuat…</p></div>';
+  document.getElementById('h-emp').onchange = function(){
+    S.hasilEmpId = this.value; muatDetail();
+  };
+
+  call('apiRecords', S.hasilEmpId, S.pin).then(function(res){
+    var box = document.getElementById('h-detail');
+    if(!res.ok){ box.innerHTML='<div class="notice err">'+esc(res.error)+'</div>'; return; }
+    S.records = res.records;
+    box.innerHTML = renderDetail();
+  });
+}
+
+function renderDetail(){
+  var emp = S.boot.employees.filter(function(e){ return e.id===S.hasilEmpId; })[0] || {};
+  var recs = S.records;
+  if(!recs.length){
+    return '<div class="empty">Belum ada penilaian masuk untuk <b>'+esc(emp.nama)+'</b>.</div>';
+  }
+
+  var perRater = S.boot.raterTypes.map(function(rt){
+    var sub = recs.filter(function(r){ return r.raterType===rt.key; });
+    var avg = function(items){
+      var v=[];
+      sub.forEach(function(r){ items.forEach(function(it){ if(r.scores[it.id]) v.push(r.scores[it.id]); }); });
+      return rata(v);
+    };
+    return { key:rt.key, label:rt.label, bobot:rt.bobot, count:sub.length,
+             integritas:avg(S.boot.integritas), kinerja:avg(S.boot.kinerja) };
+  });
+  var terisi = perRater.filter(function(r){ return r.count>0; });
+  var totalBobot = terisi.reduce(function(a,r){ return a+r.bobot; },0);
+  var tertimbang = function(f){
+    return totalBobot ? terisi.reduce(function(a,r){ return a+r[f]*r.bobot; },0)/totalBobot : null;
+  };
+  var integ = tertimbang('integritas'), kin = tertimbang('kinerja');
+  var akhir = (integ!=null && kin!=null) ? integ*0.5+kin*0.5 : null;
+
+  var itemAvg = function(it){
+    return rata(recs.map(function(r){ return r.scores[it.id]; }));
+  };
+
+  return '<div class="card">'+
+      '<div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">'+
+        '<div><div style="font:700 20px/1.3 Georgia,serif;color:var(--navy)">'+esc(emp.nama)+'</div>'+
+          '<div class="muted">'+esc(emp.jabatan||'')+(emp.unit?' · '+esc(emp.unit):'')+'</div>'+
+          '<div class="muted" style="font-size:12px">'+recs.length+' penilaian diterima dari '+
+            terisi.length+' sumber</div></div>'+
+        '<div class="badges">'+
+          badge('Integritas',integ)+badge('Kinerja',kin)+badge('Skor akhir',akhir,true)+
+        '</div></div></div>'+
+
+    '<div class="card">'+
+      '<div class="sec-title">Rata-rata skor per sumber penilai</div>'+
+      grafik(perRater)+
+      '<div class="legend"><span><i class="dot" style="background:var(--navy)"></i>Integritas</span>'+
+      '<span><i class="dot" style="background:var(--gold)"></i>Kinerja</span></div>'+
+      '<p class="muted" style="margin:10px 0 0">Bobot dihitung ulang hanya dari sumber yang sudah '+
+      'mengisi: '+esc(terisi.map(function(r){ return r.label+' ('+r.count+')'; }).join(', '))+'.</p>'+
+    '</div>'+
+
+    '<div class="grid2">'+
+      tabelIndikator('Rincian integritas', S.boot.integritas, itemAvg)+
+      tabelIndikator('Rincian kinerja', S.boot.kinerja, itemAvg)+
+    '</div>'+
+
+    (recs.some(function(r){ return r.notes; })
+      ? '<div class="card"><div class="sec-title">Catatan dari penilai</div>'+
+        recs.filter(function(r){ return r.notes; }).map(function(r){
+          return '<div class="row" style="display:block"><b style="color:var(--navy)">'+
+            esc(r.raterName)+'</b> <span class="muted">('+esc(labelRater(r.raterType))+')</span>'+
+            '<p style="margin-top:4px">'+esc(r.notes)+'</p></div>';
+        }).join('')+'</div>'
+      : '');
+}
+
+function badge(label, v, big){
+  var l = nilaiLabel(v);
+  return '<div class="badge'+(big?' big':'')+'"><em>'+label+'</em>'+
+    '<b style="color:'+(l?l.c:'#C7C7C7')+'">'+fix(v)+'</b>'+
+    (l?'<i style="color:'+l.c+'">'+l.t+'</i>':'')+'</div>';
+}
+
+/* Grafik batang berdampingan, SVG murni (tanpa pustaka eksternal). */
+function grafik(perRater){
+  var W=700, H=240, padL=34, padR=10, padB=42, padT=10;
+  var plotW = W-padL-padR, plotH = H-padT-padB;
+  var n = perRater.length, slot = plotW/n, barW = Math.min(26, slot/3.2);
+  var y = function(v){ return padT + plotH - (v/5)*plotH; };
+
+  var g = '';
+  for(var t=0;t<=5;t++){
+    var yy = y(t);
+    g += '<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+
+         '" stroke="#EFEDE6" stroke-width="1"/>'+
+         '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="#8A8F9A">'+t+'</text>';
+  }
+  perRater.forEach(function(r,i){
+    var cx = padL + slot*i + slot/2;
+    var nama = r.label.replace(' Langsung','').replace(' Sendiri (Self)','');
+    [['integritas','#0B2545',-1],['kinerja','#C9A227',1]].forEach(function(p){
+      var v = r[p[0]];
+      if(v==null) return;
+      var x = p[2] < 0 ? cx - 2 - barW : cx + 2;
+      var h = Math.max(2,(v/5)*plotH);
+      g += '<rect x="'+x+'" y="'+y(v)+'" width="'+barW+'" height="'+h+'" rx="4" fill="'+p[1]+'"/>'+
+           '<text x="'+(x+barW/2)+'" y="'+(y(v)-5)+'" text-anchor="middle" font-size="10.5" '+
+           'fill="#5B5F6B">'+v.toFixed(2)+'</text>';
+    });
+    g += '<text x="'+cx+'" y="'+(H-padB+18)+'" text-anchor="middle" font-size="11.5" fill="#33363E">'+
+         esc(nama)+'</text>'+
+         '<text x="'+cx+'" y="'+(H-padB+33)+'" text-anchor="middle" font-size="10.5" fill="#8A8F9A">'+
+         (r.count?r.count+' penilai':'belum mengisi')+'</text>';
+  });
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="240" role="img" '+
+    'aria-label="Grafik rata-rata skor integritas dan kinerja per sumber penilai">'+g+'</svg>';
+}
+
+function tabelIndikator(judul, items, itemAvg){
+  return '<div class="card"><div class="sec-title">'+judul+'</div>'+
+    items.map(function(it,i){
+      var v = itemAvg(it), l = nilaiLabel(v);
+      return '<div style="padding:8px 0;border-top:'+(i?'1px solid var(--line-soft)':'0')+'">'+
+        '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px">'+
+          '<span style="flex:1">'+esc(it.label)+'</span>'+
+          '<b style="color:'+(l?l.c:'#C7C7C7')+'">'+fix(v,1)+'</b></div>'+
+        '<div class="meter"><i style="width:'+(v?(v/5*100):0)+'%"></i></div></div>';
+    }).join('')+'</div>';
+}
+</script>
+</body>
+</html>
